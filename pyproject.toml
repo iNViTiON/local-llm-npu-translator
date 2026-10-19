@@ -1,0 +1,44 @@
+[project]
+name = "npu-translator"
+version = "0.1.0"
+description = "TranslateGemma on the Intel NPU behind an Ollama-compatible API"
+license = "MIT"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "fastapi>=0.115",
+  "uvicorn>=0.32",
+  "openvino>=2026.1",
+  "openvino-genai>=2026.1",
+  "openvino-tokenizers>=2026.1",
+  "transformers>=4.50",
+  "sentencepiece",
+  "protobuf",
+  "numpy",
+]
+
+[dependency-groups]
+dev = ["pytest", "httpx"]
+# Export-time only (scripts.convert_translation_models): `uv sync --group convert`. Not needed to serve, and
+# ~1 GB with torch. A plain `uv sync` removes them again; scripts.cleanup does the same.
+convert = [
+  "optimum-intel[openvino]>=1.25",
+  "nncf>=2.18",
+  "torch",
+  "torchvision",
+]
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
+torchvision = { index = "pytorch-cpu" }
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.setuptools]
+packages = ["server", "scripts"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

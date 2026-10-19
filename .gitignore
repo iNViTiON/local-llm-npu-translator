@@ -1,0 +1,9 @@
+.venv/
+.cache/
+models/
+__pycache__/
+.direnv/
+*.egg-info/
+.nllb.log
+.euro.log
+.cache-*.log
