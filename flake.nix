@@ -27,6 +27,9 @@
 
       runtimeLibs = with pkgs; [ stdenv.cc.cc.lib zlib ocl-icd tbb_2022 level-zero ];
     in {
+      # The server as a systemd user service (runs from a checkout; see nix/module.nix).
+      nixosModules.default = import ./nix/module.nix;
+
       packages.${system}.npu-compiler = npuCompiler;
 
       devShells.${system}.default = pkgs.mkShell {

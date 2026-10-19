@@ -119,9 +119,26 @@ The NPU is the quiet, power-efficient choice and keeps the GPU free; the GPU is 
 
 ### Running as a service
 
-[`modules/npu-translator.nix`](https://github.com/iNViTiON/nix-config/blob/main/modules/npu-translator.nix) in my
-NixOS config runs it as a systemd user service from a checkout of this repository, started at login and restarted on
-failure. Elsewhere, any user service that runs `./run.sh` works.
+On NixOS, the flake's module runs the server as a systemd user service from your checkout, started at login and
+restarted on failure:
+
+```nix
+# flake.nix
+inputs.local-llm-npu-translator.url = "github:iNViTiON/local-llm-npu-translator";
+
+# configuration
+imports = [ inputs.local-llm-npu-translator.nixosModules.default ];
+services.npu-translator = {
+  enable = true;
+  user = "alice";
+  directory = "/home/alice/local-llm-npu-translator";   # the default; must hold the converted model
+  devices = "all";                                       # "npu" (default) or NPU, GPU and CPU
+  idleUnloadSeconds = 300;
+};
+```
+
+The module only starts `run.sh`, so the checkout, its model conversion and flakes for that user are still needed.
+Elsewhere, any user service that runs `./run.sh` works.
 
 ## Security
 
