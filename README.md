@@ -1,4 +1,6 @@
-# local-llm-npu-translator
+# Local LLM NPU Translator
+
+A local translator that runs on your Intel NPU.
 
 Run **TranslateGemma** on the **Intel NPU** and serve it through an **Ollama-compatible API** on `localhost:11434`.
 Anything that already talks to Ollama can then translate locally on the NPU, leaving the GPU and CPU free:
