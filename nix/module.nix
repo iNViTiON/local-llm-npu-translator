@@ -88,6 +88,8 @@ in
               ]
           )
         );
+        # Never swap the model's memory out: weights read from disk make every token far slower.
+        MemorySwapMax = 0;
         Restart = "on-failure";
         RestartSec = 5;
         SuccessExitStatus = 143; # SIGTERM on stop, passed back through `nix develop`
